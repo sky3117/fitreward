@@ -1,0 +1,21 @@
+{
+  "name": "fitreward",
+  "version": "2.0.0",
+  "description": "Fitness tracker with Google Fit integration and food rewards",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev":   "nodemon server.js"
+  },
+  "dependencies": {
+    "axios":        "^1.6.0",
+    "cors":         "^2.8.5",
+    "dotenv":       "^16.3.1",
+    "express":      "^4.18.2",
+    "googleapis":   "^140.0.0",
+    "jsonwebtoken": "^9.0.2"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.2"
+  }
+}

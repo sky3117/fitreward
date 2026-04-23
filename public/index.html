@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>FitReward — Your Fitness, Your Treat</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;600;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="style.css"/>
+</head>
+<body>
+
+  <!-- ═══════════════════════════════════════
+       LOGIN SCREEN
+  ════════════════════════════════════════ -->
+  <div id="login-screen" class="screen active">
+    <div class="login-glow glow-1"></div>
+    <div class="login-glow glow-2"></div>
+    <div class="login-particles" id="particles"></div>
+    <div class="login-card">
+      <div class="brand-logo">🏃‍♂️</div>
+      <h1 class="brand-name">FitReward</h1>
+      <p class="brand-tagline">Walk more. Burn more. Eat better (or indulge more 😄)</p>
+      <div class="divider"></div>
+      <div class="feature-pills">
+        <span class="pill">📊 Real-time Tracking</span>
+        <span class="pill">🎁 Food Rewards</span>
+        <span class="pill">📈 Weekly Stats</span>
+      </div>
+      <p class="login-desc">Connect your Google Fit account to track steps, calculate calories burned, and unlock delicious food rewards!</p>
+      <button id="google-login-btn" class="btn-google" onclick="loginWithGoogle()">
+        <svg width="20" height="20" viewBox="0 0 48 48" style="flex-shrink:0">
+          <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>
+          <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/>
+          <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/>
+          <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.18 1.48-4.97 2.31-8.16 2.31-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/>
+        </svg>
+        Sign in with Google
+      </button>
+
+      <!-- Demo mode button -->
+      <button class="btn-demo" onclick="loginDemo()">
+        🎮 Try Demo (No Login Required)
+      </button>
+
+      <p class="login-note">🔒 We only read your step data. No personal info is stored without consent.</p>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════
+       DASHBOARD SCREEN
+  ════════════════════════════════════════ -->
+  <div id="dashboard-screen" class="screen">
+    <div class="bg-orb orb-1"></div>
+    <div class="bg-orb orb-2"></div>
+    <div class="bg-orb orb-3"></div>
+
+    <!-- NAVBAR -->
+    <nav class="navbar">
+      <div class="nav-brand">
+        <span class="nav-icon">🏃‍♂️</span>
+        <span class="nav-title">FitReward</span>
+      </div>
+      <div class="nav-right">
+        <div class="user-info">
+          <img id="user-avatar" src="" alt="avatar" class="user-avatar" onerror="this.style.display='none'"/>
+          <span id="user-name" class="user-name">User</span>
+        </div>
+        <button class="btn-sync" id="sync-btn" onclick="syncGoogleFit()">
+          <span id="sync-icon">⟳</span> Sync
+        </button>
+        <button class="btn-logout" onclick="logout()">Sign Out</button>
+      </div>
+    </nav>
+
+    <div class="dashboard-content">
+
+      <!-- DATE HEADER -->
+      <div class="date-header">
+        <div>
+          <h2 class="date-title" id="date-display">Today's Activity</h2>
+          <p class="date-sub" id="date-sub"></p>
+        </div>
+        <div class="header-streak">
+          <span class="streak-fire">🔥</span>
+          <span class="streak-count" id="streak-count">0</span>
+          <span class="streak-label">day streak</span>
+        </div>
+      </div>
+
+      <!-- STATS GRID -->
+      <div class="stats-grid">
+
+        <!-- Steps Card -->
+        <div class="card card-steps">
+          <div class="card-glow"></div>
+          <div class="card-label">👟 Steps Taken</div>
+          <div class="card-value steps-value" id="steps-display">0</div>
+          <div class="progress-wrap">
+            <div class="progress-meta">
+              <span>Daily Goal: 10,000</span>
+              <span id="goal-pct">0%</span>
+            </div>
+            <div class="progress-bar">
+              <div class="progress-fill steps-fill" id="steps-progress"></div>
+            </div>
+            <p class="progress-note" id="steps-note">Keep walking!</p>
+          </div>
+        </div>
+
+        <!-- Calories Card -->
+        <div class="card card-calories">
+          <div class="card-glow cal-glow"></div>
+          <div class="card-label">🔥 Calories Burned</div>
+          <div class="card-value cal-value" id="cal-display">0</div>
+          <div class="unit-label">kcal</div>
+          <div class="sub-stats">
+            <div class="sub-stat">
+              <span class="sub-label">Distance</span>
+              <span class="sub-val" id="distance-val">0 km</span>
+            </div>
+            <div class="sub-stat">
+              <span class="sub-label">Active Min</span>
+              <span class="sub-val" id="active-val">0 min</span>
+            </div>
+            <div class="sub-stat">
+              <span class="sub-label">Avg Speed</span>
+              <span class="sub-val" id="speed-val">0 km/h</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Fitness Ring Card -->
+        <div class="card card-ring">
+          <div class="card-label">⚡ Fitness Level</div>
+          <div class="ring-wrap">
+            <svg class="ring-svg" viewBox="0 0 120 120" width="120" height="120">
+              <circle class="ring-bg" cx="60" cy="60" r="50" />
+              <circle class="ring-fg" id="ring-fg" cx="60" cy="60" r="50"
+                stroke-dasharray="314" stroke-dashoffset="314" />
+            </svg>
+            <div class="ring-inner">
+              <span class="ring-emoji" id="ring-emoji">🛋️</span>
+            </div>
+          </div>
+          <div class="fitness-label" id="fitness-label">Sedentary</div>
+          <div class="fitness-pct" id="fitness-pct">0th percentile</div>
+        </div>
+
+      </div>
+
+      <!-- REWARD BANNER -->
+      <div class="reward-banner" id="reward-banner">
+        <div class="reward-shine" id="reward-shine"></div>
+        <div class="reward-emoji-wrap">
+          <span class="reward-emoji" id="reward-emoji">💧</span>
+        </div>
+        <div class="reward-info">
+          <div class="reward-tier-badge" id="reward-tier">🎁 REWARD UNLOCKED</div>
+          <h2 class="reward-name" id="reward-name">Hydrate!</h2>
+          <p class="reward-desc" id="reward-desc">Drink a glass of water</p>
+          <p class="reward-meta" id="reward-meta"></p>
+        </div>
+        <div class="reward-ladder" id="reward-ladder"></div>
+      </div>
+
+      <!-- BOTTOM GRID: Chart + Step Adjuster -->
+      <div class="bottom-grid">
+
+        <!-- WEEKLY CHART -->
+        <div class="card card-chart">
+          <div class="card-label">📅 Weekly Steps Overview</div>
+          <div class="chart-bars" id="chart-bars"></div>
+          <div class="chart-days" id="chart-days"></div>
+        </div>
+
+        <!-- STEP ADJUSTER (demo/manual mode) -->
+        <div class="card card-adjuster" id="step-adjuster">
+          <div class="card-label">🎮 Adjust Steps (Demo)</div>
+          <div class="adjuster-wrap">
+            <input type="range" id="step-slider" min="0" max="20000" step="100" value="8543"
+              oninput="onSliderChange(this.value)" class="step-slider"/>
+            <div class="adjuster-display">
+              <span id="slider-val">8,543</span> steps
+            </div>
+          </div>
+          <div class="quick-steps">
+            <button onclick="setSteps(2500)" class="quick-btn">2.5K</button>
+            <button onclick="setSteps(5000)" class="quick-btn">5K</button>
+            <button onclick="setSteps(7500)" class="quick-btn">7.5K</button>
+            <button onclick="setSteps(10000)" class="quick-btn">10K</button>
+            <button onclick="setSteps(15000)" class="quick-btn">15K</button>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- TIPS SECTION -->
+      <div class="tips-grid">
+        <div class="tip-card tip-blue">
+          <div class="tip-icon">💡</div>
+          <div class="tip-text">
+            <strong>Burn More</strong>
+            <p>Take the stairs instead of the elevator — adds ~200 steps per floor!</p>
+          </div>
+        </div>
+        <div class="tip-card tip-green">
+          <div class="tip-icon">🥗</div>
+          <div class="tip-text">
+            <strong>Eat Smart</strong>
+            <p>Use your calorie burn wisely — pair your reward with protein for recovery.</p>
+          </div>
+        </div>
+        <div class="tip-card tip-yellow">
+          <div class="tip-icon">🎯</div>
+          <div class="tip-text">
+            <strong>Hit 10K Steps</strong>
+            <p>10,000 daily steps reduces risk of heart disease by up to 30%.</p>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /dashboard-content -->
+  </div><!-- /dashboard-screen -->
+
+  <script src="app.js"></script>
+</body>
+</html>
