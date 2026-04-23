@@ -125,7 +125,6 @@ function logout() {
 function showLogin() {
   document.getElementById('login-screen').classList.add('active');
   document.getElementById('dashboard-screen').classList.remove('active');
-  initParticles();
 }
 
 function showDashboard() {
@@ -145,6 +144,11 @@ function showDashboard() {
   document.getElementById('date-display').textContent = "Today's Activity";
   document.getElementById('date-sub').textContent =
     now.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+
+  const navDate = document.getElementById('nav-date');
+  if (navDate) {
+    navDate.textContent = now.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+  }
 
   // Streak (mock calculation based on weekly data)
   updateStreak();
@@ -190,10 +194,10 @@ async function fetchFromBackend(endpoint) {
 async function syncGoogleFit() {
   const btn      = document.getElementById('sync-btn');
   const syncIcon = document.getElementById('sync-icon');
+  const syncText = document.getElementById('sync-text');
 
   btn.classList.add('syncing');
-  syncIcon.style.animation = 'spin 1s linear infinite';
-  btn.innerHTML = '<span>⟳</span> Syncing…';
+  if (syncText) syncText.textContent = 'Syncing…';
 
   if (state.isDemoMode) {
     // Demo: randomize steps slightly
@@ -205,10 +209,9 @@ async function syncGoogleFit() {
     await loadFitnessData();
   }
 
-  syncIcon.style.animation = 'none';
   btn.classList.remove('syncing');
-  btn.innerHTML = '<span>✓</span> Synced!';
-  setTimeout(() => { btn.innerHTML = '<span id="sync-icon">⟳</span> Sync'; }, 2000);
+  if (syncText) syncText.textContent = 'Synced!';
+  setTimeout(() => { if (syncText) syncText.textContent = 'Sync'; }, 2000);
 }
 
 // ══════════════════════════════════════════════════════
@@ -218,7 +221,7 @@ async function syncGoogleFit() {
 function onSliderChange(val) {
   const v = parseInt(val);
   state.steps = v;
-  document.getElementById('slider-val').textContent = v.toLocaleString();
+  document.getElementById('slider-val').textContent = v.toLocaleString() + ' steps';
   // Update the last day in weekly data too
   if (state.weeklyData.length) {
     state.weeklyData[state.weeklyData.length - 1].steps = v;
@@ -229,7 +232,7 @@ function onSliderChange(val) {
 function setSteps(val) {
   state.steps = val;
   document.getElementById('step-slider').value = val;
-  document.getElementById('slider-val').textContent = val.toLocaleString();
+  document.getElementById('slider-val').textContent = val.toLocaleString() + ' steps';
   if (state.weeklyData.length) {
     state.weeklyData[state.weeklyData.length - 1].steps = val;
   }
@@ -283,35 +286,23 @@ function renderDashboard(animate = true) {
   document.getElementById('active-val').textContent   = calcActiveMinutes(steps) + ' min';
   document.getElementById('speed-val').textContent    = calcSpeed(steps) + ' km/h';
 
-  // — Fitness ring
-  const circ   = 2 * Math.PI * 50;
-  const offset = circ - (fitness.pct / 100) * circ;
-  const ring   = document.getElementById('ring-fg');
-  ring.style.strokeDashoffset = offset;
-  ring.style.stroke           = fitness.color;
+  // — Fitness level bar (horizontal SVG rect)
+  const ringFill = document.getElementById('ring-fill');
+  if (ringFill) ringFill.setAttribute('width', (fitness.pct / 100) * 120);
   document.getElementById('ring-emoji').textContent    = fitness.icon;
   document.getElementById('fitness-label').textContent = fitness.label;
-  document.getElementById('fitness-label').style.color = fitness.color;
   document.getElementById('fitness-pct').textContent   = fitness.pct + 'th percentile';
 
-  // — Reward banner
-  const banner = document.getElementById('reward-banner');
-  banner.style.borderColor = reward.color + '55';
-  banner.style.boxShadow   = `0 0 40px ${reward.color}15`;
-
-  document.getElementById('reward-shine').style.background =
-    `linear-gradient(90deg, transparent, ${reward.color}88, transparent)`;
-  document.getElementById('reward-emoji').textContent     = reward.emoji;
-  document.getElementById('reward-tier').textContent      = `🎁 REWARD UNLOCKED · ${reward.tier}`;
-  document.getElementById('reward-tier').style.background = reward.color + '22';
-  document.getElementById('reward-tier').style.color      = reward.color;
-  document.getElementById('reward-name').textContent      = reward.name;
-  document.getElementById('reward-desc').textContent      = reward.desc;
-  document.getElementById('reward-meta').innerHTML        =
-    `You burned <span style="color:${reward.color};font-weight:700">${calories} kcal</span>` +
+  // — Reward section
+  document.getElementById('reward-emoji').textContent = reward.emoji;
+  document.getElementById('reward-tier').textContent  = `REWARD UNLOCKED · ${reward.tier.toUpperCase()}`;
+  document.getElementById('reward-name').textContent  = reward.name;
+  document.getElementById('reward-desc').textContent  = reward.desc;
+  document.getElementById('reward-meta').innerHTML    =
+    `You burned <strong>${calories} kcal</strong>` +
     (next
-      ? ` · Next reward at <span style="color:#e2e8f0">${next.minCal} kcal</span>`
-      : ' · Max reward reached! 🏆');
+      ? ` \u2014 next reward at ${next.minCal} kcal`
+      : ' \u2014 max reward reached!');
 
   renderRewardLadder(calories);
   renderWeeklyChart();
@@ -321,7 +312,7 @@ function renderDashboard(animate = true) {
   const slider = document.getElementById('step-slider');
   if (slider && state.isDemoMode) {
     slider.value = steps;
-    document.getElementById('slider-val').textContent = steps.toLocaleString();
+    document.getElementById('slider-val').textContent = steps.toLocaleString() + ' steps';
   }
 }
 
@@ -333,7 +324,7 @@ function renderRewardLadder(calories) {
       <div class="ladder-item ${unlocked ? 'unlocked' : ''}">
         <span class="ladder-icon">${r.emoji}</span>
         <div class="ladder-bar">
-          <div class="ladder-fill" style="width:${unlocked ? 100 : 0}%;background:${r.color}"></div>
+          <div class="ladder-fill" style="width:${unlocked ? 100 : 0}%"></div>
         </div>
       </div>`;
   }).join('');
@@ -346,15 +337,13 @@ function renderWeeklyChart() {
   const daysEl = document.getElementById('chart-days');
 
   barsEl.innerHTML = data.map((d, i) => {
-    const h      = Math.round((d.steps / maxVal) * 110);
-    const cal    = calcCalories(d.steps);
-    const reward = getReward(cal);
+    const h       = Math.round((d.steps / maxVal) * 110);
     const isToday = i === data.length - 1;
     return `
       <div class="bar-col">
-        <div class="bar-tooltip">${d.steps.toLocaleString()} ${reward.emoji}</div>
+        <div class="bar-tooltip">${d.steps.toLocaleString()}</div>
         <div class="bar-fill ${isToday ? 'today' : ''}"
-             style="height:${h}px;background:${isToday ? '' : reward.color + '55'}"
+             style="height:${h}px"
              title="${d.day}: ${d.steps.toLocaleString()} steps"></div>
       </div>`;
   }).join('');
@@ -390,29 +379,6 @@ function generateMockWeeklyData() {
   const days    = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
   const samples = [4200, 7800, 11200, 5600, 9300, 13400, state.steps || 8543];
   return days.map((day, i) => ({ day, steps: samples[i] }));
-}
-
-// ══════════════════════════════════════════════════════
-//  PARTICLES (Login screen)
-// ══════════════════════════════════════════════════════
-
-function initParticles() {
-  const container = document.getElementById('particles');
-  if (!container) return;
-  container.innerHTML = '';
-  for (let i = 0; i < 20; i++) {
-    const p = document.createElement('div');
-    p.className = 'particle';
-    p.style.cssText = `
-      left: ${Math.random() * 100}%;
-      width: ${2 + Math.random() * 3}px;
-      height: ${2 + Math.random() * 3}px;
-      animation-duration: ${5 + Math.random() * 10}s;
-      animation-delay: ${Math.random() * 8}s;
-      opacity: ${0.3 + Math.random() * 0.5};
-    `;
-    container.appendChild(p);
-  }
 }
 
 // ══════════════════════════════════════════════════════
