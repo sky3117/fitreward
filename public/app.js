@@ -147,7 +147,7 @@ function showDashboard() {
 
   const navDate = document.getElementById('nav-date');
   if (navDate) {
-    navDate.textContent = now.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }).toUpperCase();
+    navDate.textContent = now.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
   }
 
   // Streak (mock calculation based on weekly data)
@@ -301,8 +301,8 @@ function renderDashboard(animate = true) {
   document.getElementById('reward-meta').innerHTML    =
     `You burned <strong>${calories} kcal</strong>` +
     (next
-      ? ` &mdash; next reward at ${next.minCal} kcal`
-      : ' &mdash; max reward reached!');
+      ? ` \u2014 next reward at ${next.minCal} kcal`
+      : ' \u2014 max reward reached!');
 
   renderRewardLadder(calories);
   renderWeeklyChart();

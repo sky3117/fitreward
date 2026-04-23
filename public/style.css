@@ -758,7 +758,10 @@ body {
   background: var(--white);
   border: 2px solid var(--black);
   cursor: pointer;
+  transition: transform 0.1s;
 }
+
+.step-slider::-moz-range-thumb:hover { transform: scale(1.25); }
 
 .quick-steps { display: flex; gap: 8px; flex-wrap: wrap; }
 
