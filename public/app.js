@@ -5,7 +5,7 @@
 
 // ─── CONFIG ────────────────────────────────────────────
 const CONFIG = {
-  BACKEND_URL:   'http://localhost:3000',
+  BACKEND_URL:   '',   // empty = same origin (backend serves frontend)
   GOAL_STEPS:    10000,
   WEIGHT_KG:     70,
   CAL_PER_STEP:  0.04,
@@ -167,6 +167,8 @@ function updateStreak() {
 // ══════════════════════════════════════════════════════
 
 async function loadFitnessData() {
+  const overlay = document.getElementById('loading-overlay');
+  if (overlay) overlay.style.display = 'flex';
   try {
     const [todayRes, weekRes] = await Promise.all([
       fetchFromBackend('/api/steps/today'),
@@ -180,6 +182,8 @@ async function loadFitnessData() {
     state.steps      = 8543;
     state.weeklyData = generateMockWeeklyData();
     renderDashboard();
+  } finally {
+    if (overlay) overlay.style.display = 'none';
   }
 }
 

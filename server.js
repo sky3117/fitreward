@@ -18,10 +18,11 @@ const PORT = process.env.PORT || 3000;
 //  MIDDLEWARE
 // ──────────────────────────────────────────────
 const allowedOrigins = [
-  process.env.FRONTEND_URL || 'http://localhost:5500',
+  process.env.FRONTEND_URL,
+  `http://localhost:${process.env.PORT || 3000}`,
   'http://localhost:3000',
   'http://localhost:5173',
-  'http://127.0.0.1:5500',
+  'http://127.0.0.1:3000',
 ].filter(Boolean);
 
 app.use(cors({
@@ -74,7 +75,7 @@ app.get('/auth/google/callback', async (req, res) => {
 
   if (!code) {
     return res.redirect(
-      `${process.env.FRONTEND_URL || 'http://localhost:5500'}?error=no_code`
+      `${process.env.FRONTEND_URL || `http://localhost:${PORT}`}?error=no_code`
     );
   }
 
@@ -97,7 +98,7 @@ app.get('/auth/google/callback', async (req, res) => {
 
     const appToken = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '7d' });
 
-    const frontendUrl = process.env.FRONTEND_URL || 'http://localhost:5500';
+    const frontendUrl = process.env.FRONTEND_URL || `http://localhost:${PORT}`;
     res.redirect(
       `${frontendUrl}?token=${appToken}` +
       `&name=${encodeURIComponent(profile.name)}` +
@@ -106,7 +107,7 @@ app.get('/auth/google/callback', async (req, res) => {
     );
   } catch (err) {
     console.error('OAuth callback error:', err.message);
-    const frontendUrl = process.env.FRONTEND_URL || 'http://localhost:5500';
+    const frontendUrl = process.env.FRONTEND_URL || `http://localhost:${PORT}`;
     res.redirect(`${frontendUrl}?error=auth_failed`);
   }
 });
