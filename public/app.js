@@ -5,42 +5,42 @@
 
 // ─── CONFIG ────────────────────────────────────────────
 const CONFIG = {
-  BACKEND_URL:   '',   // empty = same origin (backend serves frontend)
-  GOAL_STEPS:    10000,
-  WEIGHT_KG:     70,
-  CAL_PER_STEP:  0.04,
+  BACKEND_URL: '',        // empty = same origin (theek hai)
+  GOAL_STEPS: 10000,
+  WEIGHT_KG: 70,
+  CAL_PER_STEP: 0.04,
   STEP_LENGTH_M: 0.78,
 };
 
 // ─── REWARD TABLE ──────────────────────────────────────
 const REWARDS = [
-  { minCal: 0,   emoji: '💧', name: 'Hydrate!',         desc: 'Drink a cold glass of water',          color: '#38bdf8', tier: 'Rest' },
-  { minCal: 50,  emoji: '🍎', name: 'Apple Slices',     desc: "Fresh crisp apple — nature's snack",   color: '#4ade80', tier: 'Light' },
-  { minCal: 100, emoji: '🍌', name: 'Banana',           desc: "Nature's energy bar — go for it!",     color: '#facc15', tier: 'Warm' },
-  { minCal: 150, emoji: '🥜', name: 'Mixed Nuts',       desc: 'A handful of almonds & cashews',       color: '#fb923c', tier: 'Active' },
-  { minCal: 200, emoji: '🧁', name: 'Mini Cupcake',     desc: 'You earned a sweet treat!',            color: '#c084fc', tier: 'Fit' },
-  { minCal: 300, emoji: '🍫', name: 'Dark Chocolate',   desc: 'A full bar of 70% cocoa bliss!',       color: '#a16207', tier: 'Athlete' },
-  { minCal: 400, emoji: '🍕', name: 'Pizza Slice',      desc: "Go ahead champ — you've earned it!",   color: '#f97316', tier: 'Beast' },
-  { minCal: 500, emoji: '🍔', name: 'Full Burger Meal', desc: 'Legend status. Feast unlocked! 🏆',    color: '#ef4444', tier: 'Legend' },
+  { minCal: 0, emoji: '💧', name: 'Hydrate!', desc: 'Drink a cold glass of water', color: '#38bdf8', tier: 'Rest' },
+  { minCal: 50, emoji: '🍎', name: 'Apple Slices', desc: "Fresh crisp apple — nature's snack", color: '#4ade80', tier: 'Light' },
+  { minCal: 100, emoji: '🍌', name: 'Banana', desc: "Nature's energy bar — go for it!", color: '#facc15', tier: 'Warm' },
+  { minCal: 150, emoji: '🥜', name: 'Mixed Nuts', desc: 'A handful of almonds & cashews', color: '#fb923c', tier: 'Active' },
+  { minCal: 200, emoji: '🧁', name: 'Mini Cupcake', desc: 'You earned a sweet treat!', color: '#c084fc', tier: 'Fit' },
+  { minCal: 300, emoji: '🍫', name: 'Dark Chocolate', desc: 'A full bar of 70% cocoa bliss!', color: '#a16207', tier: 'Athlete' },
+  { minCal: 400, emoji: '🍕', name: 'Pizza Slice', desc: "Go ahead champ — you've earned it!", color: '#f97316', tier: 'Beast' },
+  { minCal: 500, emoji: '🍔', name: 'Full Burger Meal', desc: 'Legend status. Feast unlocked! 🏆', color: '#ef4444', tier: 'Legend' },
 ];
 
 // ─── FITNESS LEVELS ────────────────────────────────────
 const FITNESS_LEVELS = [
-  { maxSteps: 1999,     label: 'Sedentary',    icon: '🛋️', pct: 8,  color: '#94a3b8' },
-  { maxSteps: 4999,     label: 'Light Walker', icon: '🚶', pct: 28, color: '#38bdf8' },
-  { maxSteps: 7999,     label: 'Moderate',     icon: '🏃', pct: 50, color: '#4ade80' },
-  { maxSteps: 9999,     label: 'Active',       icon: '⚡', pct: 72, color: '#facc15' },
-  { maxSteps: 14999,    label: 'Fit',          icon: '🏅', pct: 88, color: '#fb923c' },
-  { maxSteps: Infinity, label: 'Athlete',      icon: '🏆', pct: 99, color: '#c084fc' },
+  { maxSteps: 1999, label: 'Sedentary', icon: '🛋️', pct: 8, color: '#94a3b8' },
+  { maxSteps: 4999, label: 'Light Walker', icon: '🚶', pct: 28, color: '#38bdf8' },
+  { maxSteps: 7999, label: 'Moderate', icon: '🏃', pct: 50, color: '#4ade80' },
+  { maxSteps: 9999, label: 'Active', icon: '⚡', pct: 72, color: '#facc15' },
+  { maxSteps: 14999, label: 'Fit', icon: '🏅', pct: 88, color: '#fb923c' },
+  { maxSteps: Infinity, label: 'Athlete', icon: '🏆', pct: 99, color: '#c084fc' },
 ];
 
 // ─── STATE ─────────────────────────────────────────────
 let state = {
-  user:        null,
-  token:       null,
-  steps:       0,
-  weeklyData:  [],
-  isDemoMode:  false,
+  user: null,
+  token: null,
+  steps: 0,
+  weeklyData: [],
+  isDemoMode: false,
 };
 
 // ══════════════════════════════════════════════════════
@@ -60,26 +60,25 @@ function loginDemo() {
   localStorage.setItem('fitreward_demo', 'true');
   showDashboard();
   renderDashboard();
-  // Show the step adjuster in demo mode
   document.getElementById('step-adjuster').style.display = 'block';
 }
 
 function handleOAuthCallback() {
   const params = new URLSearchParams(window.location.search);
-  const token  = params.get('token');
-  const name   = params.get('name');
-  const email  = params.get('email');
-  const photo  = params.get('photo');
+  const token = params.get('token');
+  const name = params.get('name');
+  const email = params.get('email');
+  // FIX: photo URL mein special chars ho sakte hain
+  const photo = params.get('photo') ? decodeURIComponent(params.get('photo')) : '';
 
   if (token) {
     state.token = token;
-    state.user  = { name, email, photo };
+    state.user = { name, email, photo };
     localStorage.setItem('fitreward_token', token);
-    localStorage.setItem('fitreward_user',  JSON.stringify({ name, email, photo }));
+    localStorage.setItem('fitreward_user', JSON.stringify({ name, email, photo }));
     window.history.replaceState({}, document.title, '/');
     showDashboard();
     loadFitnessData();
-    // Hide demo adjuster for real users
     document.getElementById('step-adjuster').style.display = 'none';
   }
 }
@@ -98,10 +97,10 @@ function restoreSession() {
   }
   // Real session restore
   const token = localStorage.getItem('fitreward_token');
-  const user  = localStorage.getItem('fitreward_user');
+  const user = localStorage.getItem('fitreward_user');
   if (token && user) {
     state.token = token;
-    state.user  = JSON.parse(user);
+    state.user = JSON.parse(user);
     showDashboard();
     loadFitnessData();
     document.getElementById('step-adjuster').style.display = 'none';
@@ -150,12 +149,10 @@ function showDashboard() {
     navDate.textContent = now.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
   }
 
-  // Streak (mock calculation based on weekly data)
   updateStreak();
 }
 
 function updateStreak() {
-  // Simple streak: count consecutive days with > 0 steps from weekly data
   const streak = state.weeklyData
     ? state.weeklyData.filter(d => d.steps > 0).length
     : 0;
@@ -174,12 +171,12 @@ async function loadFitnessData() {
       fetchFromBackend('/api/steps/today'),
       fetchFromBackend('/api/steps/week'),
     ]);
-    state.steps      = todayRes.steps || 0;
-    state.weeklyData = weekRes.days   || generateMockWeeklyData();
+    state.steps = todayRes.steps || 0;
+    state.weeklyData = weekRes.days || generateMockWeeklyData();
     renderDashboard();
   } catch (err) {
-    console.warn('Backend not connected — using mock data:', err.message);
-    state.steps      = 8543;
+    console.error('❌ Backend error:', err.message);
+    state.steps = 0;
     state.weeklyData = generateMockWeeklyData();
     renderDashboard();
   } finally {
@@ -196,15 +193,13 @@ async function fetchFromBackend(endpoint) {
 }
 
 async function syncGoogleFit() {
-  const btn      = document.getElementById('sync-btn');
-  const syncIcon = document.getElementById('sync-icon');
+  const btn = document.getElementById('sync-btn');
   const syncText = document.getElementById('sync-text');
 
   btn.classList.add('syncing');
   if (syncText) syncText.textContent = 'Syncing…';
 
   if (state.isDemoMode) {
-    // Demo: randomize steps slightly
     state.steps = Math.floor(state.steps * (0.9 + Math.random() * 0.3));
     state.weeklyData = generateMockWeeklyData();
     await new Promise(r => setTimeout(r, 800));
@@ -226,11 +221,10 @@ function onSliderChange(val) {
   const v = parseInt(val);
   state.steps = v;
   document.getElementById('slider-val').textContent = v.toLocaleString() + ' steps';
-  // Update the last day in weekly data too
   if (state.weeklyData.length) {
     state.weeklyData[state.weeklyData.length - 1].steps = v;
   }
-  renderDashboard(false); // no animation on drag
+  renderDashboard(false);
 }
 
 function setSteps(val) {
@@ -247,72 +241,72 @@ function setSteps(val) {
 //  CALCULATIONS
 // ══════════════════════════════════════════════════════
 
-function calcCalories(steps)      { return Math.round(steps * CONFIG.CAL_PER_STEP); }
-function calcDistance(steps)      { return ((steps * CONFIG.STEP_LENGTH_M) / 1000).toFixed(2); }
+function calcCalories(steps) { return Math.round(steps * CONFIG.CAL_PER_STEP); }
+function calcDistance(steps) { return ((steps * CONFIG.STEP_LENGTH_M) / 1000).toFixed(2); }
 function calcActiveMinutes(steps) { return Math.round(steps / 100); }
 function calcSpeed(steps) {
   const mins = calcActiveMinutes(steps);
   if (mins === 0) return '0.0';
   return ((parseFloat(calcDistance(steps)) / mins) * 60).toFixed(1);
 }
-function getReward(calories)     { return [...REWARDS].reverse().find(r => calories >= r.minCal) || REWARDS[0]; }
+function getReward(calories) { return [...REWARDS].reverse().find(r => calories >= r.minCal) || REWARDS[0]; }
 function getNextReward(calories) { return REWARDS.find(r => r.minCal > calories); }
-function getFitnessLevel(steps)  { return FITNESS_LEVELS.find(l => steps <= l.maxSteps) || FITNESS_LEVELS.at(-1); }
+function getFitnessLevel(steps) { return FITNESS_LEVELS.find(l => steps <= l.maxSteps) || FITNESS_LEVELS.at(-1); }
 
 // ══════════════════════════════════════════════════════
 //  RENDER
 // ══════════════════════════════════════════════════════
 
 function renderDashboard(animate = true) {
-  const steps    = state.steps;
+  const steps = state.steps;
   const calories = calcCalories(steps);
-  const reward   = getReward(calories);
-  const next     = getNextReward(calories);
-  const fitness  = getFitnessLevel(steps);
-  const goalPct  = Math.min((steps / CONFIG.GOAL_STEPS) * 100, 100);
+  const reward = getReward(calories);
+  const next = getNextReward(calories);
+  const fitness = getFitnessLevel(steps);
+  const goalPct = Math.min((steps / CONFIG.GOAL_STEPS) * 100, 100);
 
-  // — Steps
+  // Steps
   if (animate) animateNumber('steps-display', steps);
   else document.getElementById('steps-display').textContent = steps.toLocaleString();
 
   document.getElementById('steps-progress').style.width = goalPct + '%';
-  document.getElementById('goal-pct').textContent        = Math.round(goalPct) + '%';
-  document.getElementById('steps-note').textContent      =
+  document.getElementById('goal-pct').textContent = Math.round(goalPct) + '%';
+  document.getElementById('steps-note').textContent =
     steps >= CONFIG.GOAL_STEPS
       ? `🎉 Goal achieved! ${(steps - CONFIG.GOAL_STEPS).toLocaleString()} extra steps!`
       : `${(CONFIG.GOAL_STEPS - steps).toLocaleString()} more steps to goal`;
 
-  // — Calories
+  // Calories
   if (animate) animateNumber('cal-display', calories);
   else document.getElementById('cal-display').textContent = calories.toLocaleString();
 
   document.getElementById('distance-val').textContent = calcDistance(steps) + ' km';
-  document.getElementById('active-val').textContent   = calcActiveMinutes(steps) + ' min';
-  document.getElementById('speed-val').textContent    = calcSpeed(steps) + ' km/h';
+  document.getElementById('active-val').textContent = calcActiveMinutes(steps) + ' min';
+  document.getElementById('speed-val').textContent = calcSpeed(steps) + ' km/h';
 
-  // — Fitness level bar (horizontal SVG rect)
+  // Fitness level bar
   const ringFill = document.getElementById('ring-fill');
   if (ringFill) ringFill.setAttribute('width', (fitness.pct / 100) * 120);
-  document.getElementById('ring-emoji').textContent    = fitness.icon;
+  document.getElementById('ring-emoji').textContent = fitness.icon;
   document.getElementById('fitness-label').textContent = fitness.label;
-  document.getElementById('fitness-pct').textContent   = fitness.pct + 'th percentile';
+  document.getElementById('fitness-pct').textContent = fitness.pct + 'th percentile';
 
-  // — Reward section
+  // Reward section
   document.getElementById('reward-emoji').textContent = reward.emoji;
-  document.getElementById('reward-tier').textContent  = `REWARD UNLOCKED · ${reward.tier.toUpperCase()}`;
-  document.getElementById('reward-name').textContent  = reward.name;
-  document.getElementById('reward-desc').textContent  = reward.desc;
-  document.getElementById('reward-meta').innerHTML    =
+  document.getElementById('reward-tier').textContent = `REWARD UNLOCKED · ${reward.tier.toUpperCase()}`;
+  document.getElementById('reward-name').textContent = reward.name;
+  document.getElementById('reward-desc').textContent = reward.desc;
+  document.getElementById('reward-meta').innerHTML =
     `You burned <strong>${calories} kcal</strong>` +
     (next
-      ? ` \u2014 next reward at ${next.minCal} kcal`
-      : ' \u2014 max reward reached!');
+      ? ` — next reward at ${next.minCal} kcal`
+      : ' — max reward reached!');
 
   renderRewardLadder(calories);
   renderWeeklyChart();
   updateStreak();
 
-  // Sync slider with current steps (demo mode)
+  // Sync slider (demo mode only)
   const slider = document.getElementById('step-slider');
   if (slider && state.isDemoMode) {
     slider.value = steps;
@@ -335,13 +329,13 @@ function renderRewardLadder(calories) {
 }
 
 function renderWeeklyChart() {
-  const data   = state.weeklyData;
+  const data = state.weeklyData;
   const maxVal = Math.max(...data.map(d => d.steps), 1);
   const barsEl = document.getElementById('chart-bars');
   const daysEl = document.getElementById('chart-days');
 
   barsEl.innerHTML = data.map((d, i) => {
-    const h       = Math.round((d.steps / maxVal) * 110);
+    const h = Math.round((d.steps / maxVal) * 110);
     const isToday = i === data.length - 1;
     return `
       <div class="bar-col">
@@ -362,13 +356,13 @@ function renderWeeklyChart() {
 // ══════════════════════════════════════════════════════
 
 function animateNumber(elId, target, duration = 1200) {
-  const el    = document.getElementById(elId);
+  const el = document.getElementById(elId);
   const start = Date.now();
 
   const tick = () => {
-    const elapsed  = Date.now() - start;
+    const elapsed = Date.now() - start;
     const progress = Math.min(elapsed / duration, 1);
-    const ease     = 1 - Math.pow(1 - progress, 3);
+    const ease = 1 - Math.pow(1 - progress, 3);
     el.textContent = Math.round(target * ease).toLocaleString();
     if (progress < 1) requestAnimationFrame(tick);
   };
@@ -380,7 +374,7 @@ function animateNumber(elId, target, duration = 1200) {
 // ══════════════════════════════════════════════════════
 
 function generateMockWeeklyData() {
-  const days    = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+  const days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
   const samples = [4200, 7800, 11200, 5600, 9300, 13400, state.steps || 8543];
   return days.map((day, i) => ({ day, steps: samples[i] }));
 }
