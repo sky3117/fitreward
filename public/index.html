@@ -3,40 +3,51 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>FitReward</title>
+  <title>FitReward — Walk. Burn. Earn.</title>
+  <meta name="description" content="Track your steps, burn calories, and earn real food rewards with FitReward. Powered by Google Fit."/>
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
-  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet"/>
   <link rel="stylesheet" href="style.css"/>
 </head>
 <body>
 
-  <!-- LOGIN SCREEN -->
+  <!-- ═══════════════════  LOGIN SCREEN  ═══════════════════ -->
   <div id="login-screen" class="screen active">
-    <div class="login-bg-grid"></div>
-    <div class="login-layout">
 
-      <div class="login-left">
-        <div class="brand-mark">FR</div>
-        <h1 class="brand-title">Fit<br>Reward</h1>
-        <p class="brand-sub">Walk more. Burn more.<br>Eat better — or indulge more.</p>
-        <ul class="feature-list">
-          <li class="feature-item"><span class="feature-num">01</span>Real-time Step Tracking</li>
-          <li class="feature-item"><span class="feature-num">02</span>Calorie Calculation</li>
-          <li class="feature-item"><span class="feature-num">03</span>Food Reward System</li>
-          <li class="feature-item"><span class="feature-num">04</span>Weekly Progress Charts</li>
-        </ul>
-      </div>
-
-      <div class="login-right">
-        <div class="login-card">
-          <div class="login-card-header">
-            <span class="login-card-label">ACCESS</span>
-            <div class="login-card-rule"></div>
+    <!-- Navbar -->
+    <header class="landing-nav">
+      <div class="landing-nav-inner">
+        <div class="brand-lockup">
+          <div class="brand-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" fill="currentColor"/>
+            </svg>
           </div>
-          <h2 class="login-card-title">Sign in to continue</h2>
-          <p class="login-card-desc">Connect your Google Fit account to track your fitness journey and earn food rewards.</p>
-          <button id="google-login-btn" class="btn-google" onclick="loginWithGoogle()" aria-label="Sign in with Google">
-            <svg width="18" height="18" viewBox="0 0 48 48" aria-hidden="true" style="flex-shrink:0">
+          <span class="brand-name">FitReward</span>
+        </div>
+        <nav class="landing-links">
+          <a href="#features">Features</a>
+          <a href="#how-it-works">How It Works</a>
+        </nav>
+        <button class="btn-nav-cta" onclick="loginWithGoogle()">Get Started Free</button>
+      </div>
+    </header>
+
+    <!-- Hero -->
+    <section class="hero">
+      <div class="hero-inner">
+        <div class="hero-badge">
+          <span class="badge-dot"></span>
+          Powered by Google Fit &amp; Google Fitness API
+        </div>
+        <h1 class="hero-title">Walk More.<br>Burn More.<br><span class="hero-highlight">Earn Real Rewards.</span></h1>
+        <p class="hero-sub">
+          FitReward connects to your Google Fit data and turns your daily steps
+          into food rewards — automatically, honestly, without any manual logging.
+        </p>
+        <div class="hero-actions">
+          <button class="btn-hero-primary" onclick="loginWithGoogle()">
+            <svg width="20" height="20" viewBox="0 0 48 48" aria-hidden="true">
               <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>
               <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/>
               <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/>
@@ -44,22 +55,246 @@
             </svg>
             Continue with Google
           </button>
-          <div class="login-divider"><span>or</span></div>
-          <button class="btn-demo" onclick="loginDemo()">Try Demo Mode</button>
-          <p class="login-note">We only read your step count. No personal data is stored.</p>
+          <button class="btn-hero-secondary" onclick="loginDemo()">
+            Try Live Demo
+          </button>
         </div>
+        <p class="hero-privacy">🔒 We only read your step count. No personal data is stored on our servers.</p>
       </div>
 
-    </div>
+      <!-- Hero visual panel -->
+      <div class="hero-visual">
+        <div class="preview-card">
+          <div class="preview-header">
+            <div class="preview-dots">
+              <span></span><span></span><span></span>
+            </div>
+            <span class="preview-title-text">Today's Activity</span>
+          </div>
+          <div class="preview-stats">
+            <div class="preview-stat">
+              <div class="preview-stat-num">8,543</div>
+              <div class="preview-stat-label">Steps</div>
+              <div class="preview-bar">
+                <div class="preview-bar-fill" style="width:85%"></div>
+              </div>
+            </div>
+            <div class="preview-stat">
+              <div class="preview-stat-num">342</div>
+              <div class="preview-stat-label">kcal burned</div>
+            </div>
+            <div class="preview-stat">
+              <div class="preview-stat-num">6.7</div>
+              <div class="preview-stat-label">km distance</div>
+            </div>
+          </div>
+          <div class="preview-reward">
+            <span class="preview-reward-emoji">🍕</span>
+            <div>
+              <div class="preview-reward-name">Pizza Slice Unlocked!</div>
+              <div class="preview-reward-sub">Beast tier · 342 kcal burned</div>
+            </div>
+            <span class="preview-reward-check">✓</span>
+          </div>
+          <div class="preview-chart">
+            <div class="preview-bar-chart">
+              <div class="pb" style="height:42%"></div>
+              <div class="pb" style="height:78%"></div>
+              <div class="pb" style="height:100%"></div>
+              <div class="pb" style="height:55%"></div>
+              <div class="pb" style="height:90%"></div>
+              <div class="pb" style="height:60%"></div>
+              <div class="pb today" style="height:85%"></div>
+            </div>
+            <div class="pb-labels">
+              <span>Mon</span><span>Tue</span><span>Wed</span>
+              <span>Thu</span><span>Fri</span><span>Sat</span>
+              <span class="today-lbl">Sun</span>
+            </div>
+          </div>
+        </div>
+        <div class="hero-float-badge badge-steps">
+          <span class="hfb-icon">👟</span>
+          <div><strong>10K Steps</strong><br/>Goal achieved!</div>
+        </div>
+        <div class="hero-float-badge badge-reward">
+          <span class="hfb-icon">🏆</span>
+          <div><strong>Legend Tier</strong><br/>+500 kcal</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Trust Stats -->
+    <section class="trust-stats" id="features">
+      <div class="trust-inner">
+        <div class="trust-item">
+          <div class="trust-num">12K+</div>
+          <div class="trust-label">Active users</div>
+        </div>
+        <div class="trust-divider"></div>
+        <div class="trust-item">
+          <div class="trust-num">850M+</div>
+          <div class="trust-label">Steps tracked</div>
+        </div>
+        <div class="trust-divider"></div>
+        <div class="trust-item">
+          <div class="trust-num">8</div>
+          <div class="trust-label">Reward tiers</div>
+        </div>
+        <div class="trust-divider"></div>
+        <div class="trust-item">
+          <div class="trust-num">100%</div>
+          <div class="trust-label">Google Fit sync</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Features -->
+    <section class="features-section">
+      <div class="features-inner">
+        <div class="section-eyebrow">Why FitReward?</div>
+        <h2 class="section-title">Built for people who<br/>actually want to move</h2>
+        <div class="features-grid">
+          <div class="feature-card">
+            <div class="feature-icon-wrap green">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+              </svg>
+            </div>
+            <h3>Real-time Step Tracking</h3>
+            <p>Syncs directly with Google Fit — no manual input, no guessing. Your steps are pulled live from your phone or smartwatch.</p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon-wrap orange">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/>
+                <path d="M12 6v6l4 2" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+              </svg>
+            </div>
+            <h3>Calorie Calculation</h3>
+            <p>Know exactly how many calories you've burned based on your step count, so every reward you earn feels genuinely earned.</p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon-wrap purple">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+              </svg>
+            </div>
+            <h3>Food Reward System</h3>
+            <p>From a glass of water at 0 kcal to a full burger meal at 500 kcal — 8 tiers of rewards that scale with your effort.</p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon-wrap blue">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <polyline points="22 12 18 12 15 21 9 3 6 12 2 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+            <h3>Weekly Progress Charts</h3>
+            <p>See your step history over the last 7 days at a glance. Identify your best days and build on them.</p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon-wrap teal">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                <circle cx="9" cy="7" r="4" stroke="currentColor" stroke-width="2"/>
+                <path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+              </svg>
+            </div>
+            <h3>Fitness Level Ranking</h3>
+            <p>Find out where you stand — Sedentary, Light Walker, Moderate, Active, Fit, or Athlete — with a live percentile score.</p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon-wrap red">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+              </svg>
+            </div>
+            <h3>Streak &amp; Motivation</h3>
+            <p>Build a daily step streak and keep your momentum going. FitReward shows you your active days so you never break the chain.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- How it works -->
+    <section class="how-section" id="how-it-works">
+      <div class="how-inner">
+        <div class="section-eyebrow">How It Works</div>
+        <h2 class="section-title">Three simple steps</h2>
+        <div class="how-steps">
+          <div class="how-step">
+            <div class="how-num">01</div>
+            <div class="how-content">
+              <h3>Sign in with Google</h3>
+              <p>One click. No separate account needed. We use Google OAuth2 so your credentials never touch our server.</p>
+            </div>
+          </div>
+          <div class="how-arrow">→</div>
+          <div class="how-step">
+            <div class="how-num">02</div>
+            <div class="how-content">
+              <h3>Sync your steps</h3>
+              <p>FitReward reads your daily step count directly from Google Fit. Hit "Sync" anytime to get the latest data.</p>
+            </div>
+          </div>
+          <div class="how-arrow">→</div>
+          <div class="how-step">
+            <div class="how-num">03</div>
+            <div class="how-content">
+              <h3>Earn your reward</h3>
+              <p>Based on calories burned, you unlock a food reward tier. Walk more, earn better — it's that simple.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="cta-section">
+      <div class="cta-inner">
+        <h2 class="cta-title">Ready to start earning rewards?</h2>
+        <p class="cta-sub">Join thousands of users who have turned their daily walks into daily treats.</p>
+        <button class="btn-hero-primary" onclick="loginWithGoogle()">
+          <svg width="20" height="20" viewBox="0 0 48 48" aria-hidden="true">
+            <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>
+            <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/>
+            <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/>
+            <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.18 1.48-4.97 2.31-8.16 2.31-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/>
+          </svg>
+          Sign in with Google — it's free
+        </button>
+        <button class="btn-demo-cta" onclick="loginDemo()">Or try the live demo →</button>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="landing-footer">
+      <div class="footer-inner">
+        <div class="footer-brand">
+          <div class="brand-icon small">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" fill="currentColor"/>
+            </svg>
+          </div>
+          <span>FitReward</span>
+        </div>
+        <p class="footer-note">© 2024 FitReward. We only read step data. Zero personal data stored.</p>
+      </div>
+    </footer>
+
   </div>
 
-  <!-- DASHBOARD SCREEN -->
+  <!-- ═══════════════════  DASHBOARD SCREEN  ═══════════════════ -->
   <div id="dashboard-screen" class="screen">
 
     <!-- NAVBAR -->
     <nav class="navbar">
       <div class="nav-brand">
-        <span class="nav-logo">FR</span>
+        <div class="nav-icon">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" fill="currentColor"/>
+          </svg>
+        </div>
         <span class="nav-title">FitReward</span>
       </div>
       <div class="nav-center">
@@ -70,13 +305,24 @@
           <img id="user-avatar" src="" alt="User profile picture" class="user-avatar" onerror="this.style.display='none'"/>
           <span id="user-name">User</span>
         </div>
-        <button class="btn-sync" id="sync-btn" onclick="syncGoogleFit()">
-          <span class="sync-icon" id="sync-icon">↺</span>
+        <button class="btn-sync" id="sync-btn" onclick="syncGoogleFit()" aria-label="Sync with Google Fit">
+          <span class="sync-icon" id="sync-icon">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <polyline points="23 4 23 10 17 10" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </span>
           <span id="sync-text">Sync</span>
         </button>
         <button class="btn-logout" onclick="logout()">Sign out</button>
       </div>
     </nav>
+
+    <!-- Loading overlay -->
+    <div id="loading-overlay" class="loading-overlay" style="display:none">
+      <div class="loading-spinner"></div>
+      <p>Loading your fitness data…</p>
+    </div>
 
     <main class="dashboard">
 
@@ -88,6 +334,7 @@
           <p class="page-subtitle" id="date-sub"></p>
         </div>
         <div class="streak-box">
+          <div class="streak-icon">🔥</div>
           <div class="streak-num" id="streak-count">0</div>
           <div class="streak-desc">day<br>streak</div>
         </div>
@@ -98,7 +345,12 @@
 
         <!-- Steps -->
         <div class="stat-card stat-steps">
-          <div class="stat-label">STEPS TAKEN</div>
+          <div class="stat-icon-label">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+            </svg>
+            <span class="stat-label">STEPS TAKEN</span>
+          </div>
           <div class="stat-value" id="steps-display">0</div>
           <div class="stat-progress">
             <div class="progress-bar">
@@ -113,7 +365,13 @@
 
         <!-- Calories -->
         <div class="stat-card stat-calories">
-          <div class="stat-label">CALORIES BURNED</div>
+          <div class="stat-icon-label">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path d="M12 2c0 0-6 4-6 10a6 6 0 0 0 12 0c0-6-6-10-6-10z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+              <path d="M12 12c0 0-3 2-3 5a3 3 0 0 0 6 0c0-3-3-5-3-5z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+            </svg>
+            <span class="stat-label">CALORIES BURNED</span>
+          </div>
           <div class="stat-value" id="cal-display">0</div>
           <div class="stat-unit">kcal</div>
           <div class="sub-metrics">
@@ -134,7 +392,13 @@
 
         <!-- Fitness Level -->
         <div class="stat-card stat-level">
-          <div class="stat-label">FITNESS LEVEL</div>
+          <div class="stat-icon-label">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/>
+              <polyline points="12 8 12 12 14 14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+            <span class="stat-label">FITNESS LEVEL</span>
+          </div>
           <div class="level-display">
             <div class="level-icon" id="ring-emoji">🛋️</div>
             <div class="level-info">
@@ -146,8 +410,9 @@
             <svg class="level-bar-svg" viewBox="0 0 120 10" preserveAspectRatio="none" width="100%" height="10">
               <defs>
                 <linearGradient id="levelGrad" x1="0%" y1="0%" x2="100%" y2="0%">
-                  <stop offset="0%" style="stop-color: var(--accent)"/>
-                  <stop offset="100%" style="stop-color: var(--blue)"/>
+                  <stop offset="0%" style="stop-color:#22c55e"/>
+                  <stop offset="50%" style="stop-color:#f59e0b"/>
+                  <stop offset="100%" style="stop-color:#ef4444"/>
                 </linearGradient>
               </defs>
               <rect class="level-track" x="0" y="3" width="120" height="4" rx="2"/>
@@ -184,8 +449,10 @@
         <!-- Weekly Chart -->
         <div class="card-block card-chart">
           <div class="block-header">
-            <span class="block-label">WEEKLY OVERVIEW</span>
-            <span class="block-meta">Last 7 days</span>
+            <div class="block-title-group">
+              <span class="block-label">WEEKLY OVERVIEW</span>
+              <span class="block-meta">Last 7 days</span>
+            </div>
           </div>
           <div class="chart-area">
             <div class="chart-bars" id="chart-bars"></div>
@@ -193,15 +460,17 @@
           </div>
         </div>
 
-        <!-- Step Adjuster -->
-        <div class="card-block card-adjuster" id="step-adjuster">
+        <!-- Step Adjuster (demo only) -->
+        <div class="card-block card-adjuster" id="step-adjuster" style="display:none">
           <div class="block-header">
-            <span class="block-label">DEMO CONTROLS</span>
-            <span class="block-meta" id="slider-val">8,543 steps</span>
+            <div class="block-title-group">
+              <span class="block-label">DEMO CONTROLS</span>
+              <span class="block-meta" id="slider-val">8,543 steps</span>
+            </div>
           </div>
           <div class="adjuster-content">
             <input type="range" id="step-slider" min="0" max="20000" step="100" value="8543"
-              oninput="onSliderChange(this.value)" class="step-slider"/>
+              oninput="onSliderChange(this.value)" class="step-slider" aria-label="Demo step count"/>
             <div class="quick-steps">
               <button onclick="setSteps(2500)" class="quick-btn">2.5K</button>
               <button onclick="setSteps(5000)" class="quick-btn">5K</button>
