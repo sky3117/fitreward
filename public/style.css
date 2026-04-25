@@ -400,8 +400,6 @@ a:hover { text-decoration: underline; }
   flex-shrink: 0;
 }
 
-.preview-chart { }
-
 .preview-bar-chart {
   display: flex;
   align-items: flex-end;
