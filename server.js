@@ -17,7 +17,7 @@ console.log("PORT:", PORT);
 console.log("CLIENT_ID:", process.env.GOOGLE_CLIENT_ID ? "OK" : "MISSING");
 console.log("CLIENT_SECRET:", process.env.GOOGLE_CLIENT_SECRET ? "OK" : "MISSING");
 console.log("JWT_SECRET:", process.env.JWT_SECRET ? "OK" : "MISSING");
-
+console.log("REDIRECT_URI:", process.env.GOOGLE_REDIRECT_URI || "MISSING");
 // ──────────────────────────────────────────────
 // MIDDLEWARE
 // ──────────────────────────────────────────────
